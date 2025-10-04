@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* BloomWatch Design System - NASA-inspired space theme */
+
+@layer base {
+  :root {
+    /* NASA-inspired dark space theme */
+    --background: 220 20% 8%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 203 95% 55%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 120 95% 45%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 20% 18%;
+    --input: 220 25% 12%;
+    --ring: 203 95% 55%;
+
+    --radius: 0.5rem;
+
+    /* Custom NASA-style tokens */
+    --space-dark: 220 25% 8%;
+    --space-darker: 220 30% 4%;
+    --nasa-blue: 203 95% 55%;
+    --operational-green: 120 95% 45%;
+    --warning-amber: 45 95% 55%;
+    
+    /* Gradients */
+    --gradient-space: linear-gradient(135deg, hsl(var(--space-darker)), hsl(var(--space-dark)));
+    --gradient-earth: linear-gradient(180deg, hsl(var(--space-dark)) 0%, hsl(203 30% 15%) 100%);
+    
+    /* Shadows */
+    --shadow-glow: 0 0 20px hsl(var(--nasa-blue) / 0.3);
+    --shadow-operational: 0 0 10px hsl(var(--operational-green) / 0.4);
+    
+    /* Animation */
+    --transition-space: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark theme uses same tokens as our space theme is inherently dark */
+    --background: 220 20% 8%;
+    --foreground: 0 0% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-mono;
+    zoom: 0.823;
+   
+  }
+
+  /* NASA-style typography */
+  .text-nasa-title {
+    @apply text-4xl md:text-6xl font-bold tracking-wider;
+  }
+  
+  .text-nasa-subtitle {
+    @apply text-lg md:text-xl font-medium tracking-wide opacity-90;
+  }
+  
+  .text-operational {
+    @apply text-sm font-mono tracking-widest;
+  }
+
+  /* Glow effects */
+  .glow-blue {
+    text-shadow: 0 0 10px hsl(var(--nasa-blue) / 0.5);
+  }
+  
+  .glow-green {
+    text-shadow: 0 0 8px hsl(var(--operational-green) / 0.8);
+  }
+}
