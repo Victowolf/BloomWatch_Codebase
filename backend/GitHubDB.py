@@ -292,63 +292,7 @@ async def ecological_a(prompt: str = Form(...)):
       prompt: '{"region": "Agra", "year": 2025, "csv_data": "...", "seasonalA": {...}, "historicalA": {...}, "estimation": {...}, "nutrientA": {...}}'
     """
     try:
-        helper = """
-            You are an expert ecological and phenology AI with advanced ecological intelligence. Your task is to provide a comprehensive ecological analysis for a given region and year based on the data provided. The analysis should cover vegetation dynamics, bloom events, nutrient cycles, ecosystem health, and climate-phenology interactions.
-
-            ### Input:
-            You are provided with:
-            1. Region Name and Year and history
-            2. CSV data with columns: Date (YYYY-MM-DD), NDVI, RCC, YCC, BCC, ExG
-            3. Seasonal Analysis 
-            4. Historical Analysis 
-            5. Growth Estimation 
-            6. Nutrient Data 
-
-            ### Your Task:
-            Using the provided data, generate a detailed ecological analysis covering:
-            1. Phenology & Bloom Events
-            2. Vegetation Health & Productivity
-            3. Nutrient Analysis
-            4. Climate-Phenology Interactions
-            5. Advanced Ecological Intelligence
-            6. Summary / Actionable Insights
-
-            ### Instructions
-            - to calulte bloom_shift_days, bloom_duration_days refer history(SOB: start of bloom, POB: peak of bloom, EOB: end of bloom), 
-              history has this data over the years. 
-            - to compute predicted_shift_days: predict the shift of days for the up coming year. 
-            - Summary should be in markdown format.
-
-            ### Output Format (JSON only):
-            {
-              "phenology": {
-                "bloom_shift_days": value,
-                "bloom_duration_days": value
-              },
-              "vegetation": {
-                "ecosystem_productivity_index": value (0-1)
-              },
-              "climate_phenology": {
-                "temperature_impact": "Low | Moderate | High",
-                "precipitation_impact": "Low | Moderate | High",
-                "extreme_event_risk": "Low | Moderate | High",
-                "predicted_shift_days": value
-              },
-              "ecological_indicators": {
-                "pollen_index": value (0-1),
-                "pollinator_support_index": value (0-1),
-                "invasive_species_risk": value (1-100),
-                "phenological_synchrony_score": value (1-100),
-                "ecosystem_resilience_score": value (1-100)
-              },
-              "summary": "Concise paragraph summarizing the ecological insights, risks, and recommendations including climate-phenology interactions."
-            }
-
-            Use the data provided in the prompt to generate the JSON response. Return only JSON.
-        """
-
-        # Call Gemini API with helper + user-provided prompt
-        response_text = get_gemini_response(helper + prompt)
+        response_text = get_model_response(prompt)
 
         # Clean up possible code block markers
         cleaned = re.sub(r"^```json|```$", "", response_text, flags=re.MULTILINE).strip()
@@ -356,7 +300,7 @@ async def ecological_a(prompt: str = Form(...)):
 
         return JSONResponse(content=result)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Gemini API error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"API error: {str(e)}")
     
 # ------------------------
 # 11. weather forcast
@@ -371,63 +315,7 @@ async def weather(prompt: str = Form(...)):
       prompt: '{"current_date": "2025-10-04"}'
     """
     try:
-        helper = """
-            You are an expert weather AI assistant. Your task is to generate a JSON object containing all the information needed:
-            use region name and current date provided.
-
-            1. Current weather:
-               - temperature (value in digrees)
-               - feels_like (value in digrees)
-               - condition (string, e.g., "Light rain")
-               - icon ("Sun" | "Cloud" | "CloudRain" | "CloudLightning")
-               - precipitation (percentage value)
-               - humidity (percentage value)
-               - wind (value in km/hr)
-               - air_quality ( "Good" | "Moderate" | "Poor")
-
-            2. Week forecast:
-               - for the next 7 days from present day, include current day):
-                 - day (short string: "Sun", "Mon", etc.)
-                 - temp (value in digrees)
-                 - icon ("Sun" | "Cloud" | "CloudRain" | "CloudLightning")
-
-            3. Monthly summary (for the next 6 months from present month, include current month):
-               - name (month name)
-               - avg (average temperature, string)
-               - rainy (number of rainy days)
-               - sunny (number of sunny days)
-               - wind (average wind speed in km/hr)
-               - icon ( "Sun" | "Cloud" | "CloudRain" | "CloudLightning")
-
-
-            ### Output:
-            Return only a valid JSON object with the following structure:
-
-            {
-              "current": {
-                "temperature": "...",
-                "feels_like": "...",
-                "condition": "...",
-                "icon": "...",
-                "precipitation": ...,
-                "humidity": ...,
-                "wind": "...",
-                "air_quality": "..."
-              },
-              "week": [
-                {"day": "...", "temp": "...", "icon": "..."},
-                {"day": "...", "temp": "...", "icon": "..."},
-                ...
-              ],
-              "months": [
-                {"name": "...", "avg": "...", "rainy": ..., "sunny": ..., "wind": "...", "icon": "..."},
-                ...
-              ]
-            }
-        """
-
-        # Call Gemini API with helper + user-provided prompt
-        response_text = get_gemini_response(helper + prompt)
+        response_text = get_modal_response(prompt)
 
         # Clean up possible code block markers
         cleaned = re.sub(r"^```json|```$", "", response_text, flags=re.MULTILINE).strip()
@@ -435,4 +323,4 @@ async def weather(prompt: str = Form(...)):
 
         return JSONResponse(content=result)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Gemini API error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"API error: {str(e)}")
