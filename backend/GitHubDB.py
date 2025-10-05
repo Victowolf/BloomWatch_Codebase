@@ -268,39 +268,7 @@ async def nutrientA(prompt: str = Form(...)):
     with appropriate measuring units.
     """
     try:
-        helper = """
-            You are an advanced phenology and soil nutrient AI model.
-            You will receive a JSON string containing the region name and year.
-            
-            ### Your task:
-            1. Use the region and year to **estimate average soil micronutrient levels**.
-            2. Use the latest available **agricultural and environmental data** accessible on the web.
-            3. Return the nutrient concentrations typically found in the soil of that region and year.
-            4. compute values in terms of mg/m^2 for each nutrient. dont not include the term in json output.
-            5. Provide realistic scientific ranges — for example:
-                - Iron (Fe): 2–100 
-                - Zinc (Zn): 0.3–10 
-                - Copper (Cu): 0.2–10 
-                - Phosphorus (P): 5–50 
-                - Nitrates (N): 10–100 
-            
-            ### Output Format (JSON only):
-            ```json
-            {
-              "Iron (Fe)": "value",
-              "Zinc (Zn)": "value",
-              "Copper (Cu)": "value",
-              "Phosphorus (P)": "value",
-              "Nitrates (N)": "value"
-            }
-            ```
-
-            Use the location and year to refine your estimations.
-            Do not include explanations, just return JSON in the specified format.
-        """
-
-        # Call Gemini API with helper + user prompt
-        response_text = get_gemini_response(helper + prompt)
+        response_text = get_model_response(prompt)
 
         # Clean JSON markers if present
         cleaned = re.sub(r"^```json|```$", "", response_text, flags=re.MULTILINE).strip()
@@ -309,7 +277,7 @@ async def nutrientA(prompt: str = Form(...)):
         return JSONResponse(content=result)
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Gemini API error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"API error: {str(e)}")
 
 # ------------------------
 # 10.Ecological analaysis
