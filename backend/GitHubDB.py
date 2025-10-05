@@ -242,33 +242,7 @@ async def estimation(prompt: str = Form(...)):
     Returns estimated vegetation growth %, yield, and pollen production.
     """
     try:
-        helper = """
-            You are a phenology AI tasked with estimating vegetation and agricultural metrics for a given region.
-            You will be provided a JSON string containing the region name and current year CSV data (vegetation indices).
-
-            ### Instructions:
-            1. Compute **vegetation growth percentage** compared to the previous year based on NDVI or other indices.
-            2. Estimate **yield production** for the current year in kg/ha using the vegetation indices.
-            3. Estimate **pollen production** for the current year in kg/ha based on the region and vegetation growth.
-            4. Estimate **bloom_date** for the up coming next year.
-            4. Use web/internet knowledge for location-specific parameters when needed.
-            5. Return **only JSON**, no commentary or extra text.
-
-            ### Output Format (JSON only):
-            ```json
-            {
-              "vegetation_growth_percentage": 0.0,
-              "yield_production": 0.0,
-              "pollen_production": 0.0,
-              "bloom_date": YYYY-MM-DD,
-            }
-            ```
-
-            Use the CSV data provided in the prompt for your computations.
-        """
-
-        # Call Gemini API with helper + user prompt
-        response_text = get_gemini_response(helper + prompt)
+        response_text = get_model_response(prompt)
 
         # Clean up code block markers if present
         cleaned = re.sub(r"^```json|```$", "", response_text, flags=re.MULTILINE).strip()
@@ -277,7 +251,7 @@ async def estimation(prompt: str = Form(...)):
         return JSONResponse(content=result)
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Gemini API error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"API error: {str(e)}")
 
 # ------------------------
 # 9. Nutrient Estimation
